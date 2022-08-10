@@ -1,3 +1,4 @@
+from sqlite3 import Timestamp
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -24,6 +25,15 @@ class User(BaseModel):
     class Config():
         orm_mode = True
 
+# only for post display
+
+class Comment(BaseModel):
+    text:str
+    username:str
+    timestamp: datetime
+    class Config():
+        orm_mode = True
+
 class PostDisplay(BaseModel):
     id: int
     image_url: str
@@ -31,6 +41,8 @@ class PostDisplay(BaseModel):
     caption: str
     timestamp = datetime
     user : User
+    comments: list[Comment]
+
     class Config():
         orm_mode = True
 
@@ -39,3 +51,7 @@ class UserAuth(BaseModel):
     username:str
     email:str
 
+class CommentBase(BaseModel):
+    username:str
+    text:str
+    post_id:int
